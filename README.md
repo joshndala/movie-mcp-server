@@ -47,9 +47,9 @@ python server.py
 ```
 
 ### 2. Network Mode (SSE)
-Use this for web-based clients or the MCP Inspector.
+Use this for web-based clients or the MCP Inspector. It automatically detects the `PORT` environment variable (common for platforms like Render).
 ```bash
-python server.py --transport sse --port 8000
+python server.py --transport sse
 ```
 
 ## Testing & Debugging

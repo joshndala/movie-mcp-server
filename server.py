@@ -139,12 +139,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--transport", default="stdio", choices=["stdio", "sse"],
                         help="Choose 'stdio' for Desktop Apps or 'sse' for Web/ChatGPT")
-    parser.add_argument("--port", type=int, default=8000, help="Port for SSE")
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", "8000")), 
+                        help="Port for SSE (defaults to 8000 or PORT env var)")
     
     args = parser.parse_args()
 
     if args.transport == "sse":
-        print(f"🚀 Starting Server (SSE) on port {args.port}...")
-        mcp.run(transport="sse", host="0.0.0.0", port=args.port)
+        mcp.settings.host = "0.0.0.0"
+        mcp.settings.port = args.port
+        print(f"🚀 Starting Server (SSE) on port {mcp.settings.port}...")
+        mcp.run(transport="sse")
     else:
         mcp.run(transport="stdio")
