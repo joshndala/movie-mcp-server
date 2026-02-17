@@ -2,6 +2,7 @@ import os
 import httpx
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
+import argparse
 
 load_dotenv()
 
@@ -10,7 +11,7 @@ if not API_KEY:
     raise ValueError("API_KEY not found! Make sure you have a .env file.")
 
 
-mcp = FastMCP("Movie Battle Server")
+mcp = FastMCP("Movie Battle Server", host="0.0.0.0", port=8000)
 
 def get_movie_data(title: str):
     """Fetches and cleans data from OMDb."""
@@ -135,4 +136,15 @@ def compare_movies(movie_a: str, movie_b: str) -> str:
     return html_content
 
 if __name__ == "__main__":
-    mcp.run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--transport", default="stdio", choices=["stdio", "sse"],
+                        help="Choose 'stdio' for Desktop Apps or 'sse' for Web/ChatGPT")
+    parser.add_argument("--port", type=int, default=8000, help="Port for SSE")
+    
+    args = parser.parse_args()
+
+    if args.transport == "sse":
+        print(f"🚀 Starting Server (SSE) on port {args.port}...")
+        mcp.run(transport="sse", host="0.0.0.0", port=args.port)
+    else:
+        mcp.run(transport="stdio")
