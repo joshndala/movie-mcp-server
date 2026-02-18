@@ -59,10 +59,11 @@ def get_movie_data(title: str):
 @mcp.tool()
 def compare_movies(movie_a: str, movie_b: str) -> str:
     """
-    Fetches real data for two movies and returns a visual comparison card.
-    Args:
-        movie_a: Title of first movie (e.g., 'Iron Man')
-        movie_b: Title of second movie (e.g., 'The Dark Knight')
+    Fetches data and returns a standalone HTML/CSS comparison card.
+    
+    IMPORTANT: The output of this tool is valid HTML. 
+    You MUST display this output to the user by generating a generic HTML Artifact 
+    containing the exact code returned by the tool.
     """
     # 1. Fetch Real Data
     data_a = get_movie_data(movie_a)
